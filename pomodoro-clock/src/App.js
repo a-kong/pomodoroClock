@@ -1,24 +1,64 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { useState } from "react";
+import Break from "./components/Break.jsx";
+import Session from "./components/Session.jsx";
+import TimeLeft from "./components/TimeLeft.jsx";
 
 function App() {
+// SESSION COMPONENT LIFT
+  const [
+		sessionDurationInSeconds,
+		setSessionDurationInSeconds
+  ] = useState(60 * 25);
+  
+  const decrementSessionDurationByOneMinute = () => {
+		const newSessionDuration = sessionDurationInSeconds - 60;
+		
+		if(newSessionDuration < 0) {
+			setSessionDurationInSeconds(0);
+		} else {
+			setSessionDurationInSeconds(newSessionDuration);
+		}
+	}
+
+	const incrementSessionDurationByOneMinute = () => {
+		setSessionDurationInSeconds(sessionDurationInSeconds + 60);
+  };
+  
+// BREAK COMPONENT LIFT
+  const [ 
+		breakDurationInSeconds, 
+		setBreakDurationInSeconds
+	] = useState(300);
+
+	const decrementBreakDurationByOneMinute = () => {
+		const newBreakDuration = breakDurationInSeconds - 60;
+
+		if(newBreakDuration < 0) {
+			setBreakDurationInSeconds(0);
+		} else {
+			setBreakDurationInSeconds(newBreakDuration);
+		}
+	};
+
+	const incrementBreakDurationByOneMinute = () => {
+		setBreakDurationInSeconds(breakDurationInSeconds + 60);
+	};
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Break 
+        breakDurationInSeconds = {breakDurationInSeconds}
+        incrementBreakDurationByOneMinute = {incrementBreakDurationByOneMinute}
+        decrementBreakDurationByOneMinute = {decrementBreakDurationByOneMinute} />
+      <TimeLeft 
+        sessionDurationInSeconds = {sessionDurationInSeconds} />  
+      <Session 
+        sessionDurationInSeconds = {sessionDurationInSeconds}
+        incrementSessionDurationByOneMinute = {incrementSessionDurationByOneMinute}
+        decrementSessionDurationByOneMinute = {decrementSessionDurationByOneMinute} />
     </div>
   );
 }
